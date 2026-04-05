@@ -25,8 +25,30 @@ The model backend is currently based on Ollama.
 
 **[The detailed tutorial: Components of a Coding Agent](https://magazine.sebastianraschka.com/p/components-of-a-coding-agent)**
 
-&nbsp;
 
+&nbsp;
+## Six Core Components
+
+<a href="https://magazine.sebastianraschka.com/p/components-of-a-coding-agent">
+  <img alt="Six core components of a coding agent" src="https://sebastianraschka.com/images/github/mini-coding-agent/six-components.webp" width="500px">
+</a>
+
+This coding harness is organized around six practical building blocks:
+
+1. **Live repo context**  
+   The agent collects stable workspace facts upfront, such as repo layout, instructions, and git state.
+2. **Prompt shape and cache reuse**  
+   A stable prompt prefix, which is separate from the changing request, transcript, and memory so repeated model calls can reuse the static parts efficiently.
+3. **Structured tools, validation, and permissions**  
+   The model works through named tools with checked inputs, workspace path validation, and approval gates instead of free-form arbitrary actions.
+4. **Context reduction and output management**  
+   Long outputs are clipped, repeated reads are deduplicated, and older transcript entries are compressed to keep prompt size under control.
+5. **Transcripts, memory, and resumption**  
+   The runtime keeps both a full durable transcript and a smaller working memory so sessions can be resumed while preserving important state via working memory.
+6. **Delegation and bounded subagents**  
+   Scoped subtasks can be delegated to helper agents that inherit enough context to help (but operate within limits).
+
+&nbsp;
 ## Requirements
 
 You need:
