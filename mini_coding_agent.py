@@ -1,6 +1,5 @@
 import argparse
 import json
-import os
 import re
 import shutil
 import subprocess
@@ -734,11 +733,23 @@ class MiniAgent:
         self.session["memory"] = {"task": "", "files": [], "notes": []}
         self.session_store.save(self.session)
 
+    def path_is_within_root(self, resolved):
+        probe = resolved
+        while not probe.exists() and probe.parent != probe:
+            probe = probe.parent
+        for candidate in (probe, *probe.parents):
+            try:
+                if candidate.samefile(self.root):
+                    return True
+            except OSError:
+                continue
+        return False
+
     def path(self, raw_path):
         path = Path(raw_path)
         path = path if path.is_absolute() else self.root / path
         resolved = path.resolve()
-        if os.path.commonpath([str(self.root), str(resolved)]) != str(self.root):
+        if not self.path_is_within_root(resolved):
             raise ValueError(f"path escapes workspace: {raw_path}")
         return resolved
 
@@ -956,7 +967,12 @@ def build_arg_parser():
     parser.add_argument("--host", default="http://127.0.0.1:11434", help="Ollama server URL.")
     parser.add_argument("--ollama-timeout", type=int, default=300, help="Ollama request timeout in seconds.")
     parser.add_argument("--resume", default=None, help="Session id to resume or 'latest'.")
-    parser.add_argument("--approval", choices=("ask", "auto", "never"), default="ask", help="Approval policy for risky tools.")
+    parser.add_argument(
+        "--approval",
+        choices=("ask", "auto", "never"),
+        default="ask",
+        help="Approval policy for risky tools; auto grants the model arbitrary command execution and file writes.",
+    )
     parser.add_argument("--max-steps", type=int, default=6, help="Maximum tool/model iterations per request.")
     parser.add_argument("--max-new-tokens", type=int, default=512, help="Maximum model output tokens per step.")
     parser.add_argument("--temperature", type=float, default=0.2, help="Sampling temperature sent to Ollama.")
