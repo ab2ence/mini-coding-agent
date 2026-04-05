@@ -17,11 +17,13 @@ It is a minimal local agent loop with:
 
 The model backend is currently based on Ollama.
 
-<img src="https://sebastianraschka.com/images/github/mini-coding-agent/1.webp" width="500px">
+<a href="https://magazine.sebastianraschka.com/p/components-of-a-coding-agent">
+  <img src="https://substack-post-media.s3.amazonaws.com/public/images/49b97718-57f4-4977-99c8-8ad5c4d32af3_1548x862.png" width="500px">
+</a>
 
 <br>
 
-**Stay tuned for a more detailed tutorial to be linked here**
+**[The detailed tutorial: Components of a Coding Agent](https://magazine.sebastianraschka.com/p/components-of-a-coding-agent)**
 
 &nbsp;
 
