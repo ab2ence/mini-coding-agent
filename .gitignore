@@ -33,3 +33,7 @@ tmp/
 
 # OS files
 .DS_Store
+
+.trae/
+README_origin.md
+笔试介绍.md
