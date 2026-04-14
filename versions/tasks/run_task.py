@@ -21,7 +21,7 @@ from datetime import datetime
 from typing import Dict, List, Any, Optional
 
 # 添加项目根目录到路径
-project_root = Path(__file__).parent.parent
+project_root = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(project_root))
 
 # 根据版本选择 agent
@@ -88,20 +88,21 @@ class TaskRunner:
         try:
             # 初始化 Agent
             if hasattr(agent_module, 'MiniAgent'):
-                from mini_coding_agent import SessionStore, WorkspaceContext
+                SessionStore = agent_module.SessionStore
+                WorkspaceContext = agent_module.WorkspaceContext
 
                 workspace = WorkspaceContext.build(work_dir)
                 store = SessionStore(work_dir / ".mini-coding-agent" / "sessions")
 
                 # 尝试使用真实模型
                 try:
-                    from mini_coding_agent import ModelClient
+                    ModelClient = agent_module.ModelClient
                     model_client = ModelClient(model=self.model_name)
                 except Exception:
                     # 回退到 FakeModelClient
                     if self.verbose:
                         print("[WARN] Using FakeModelClient - no real model")
-                    from mini_coding_agent import FakeModelClient
+                    FakeModelClient = agent_module.FakeModelClient
                     model_client = FakeModelClient([
                         f"<final>Response to: {turn[:50]}...</final>"
                         for turn in turns
@@ -243,6 +244,9 @@ class TaskRunner:
             agent_path = project_root / "baseline" / f"{agent_module_name}.py"
         else:
             agent_path = project_root / "with-memory" / f"{agent_module_name}.py"
+        
+        print(f"[DEBUG] project_root: {project_root}")
+        print(f"[DEBUG] agent_path: {agent_path}")
 
         if not agent_path.exists():
             raise FileNotFoundError(f"Agent module not found: {agent_path}")

@@ -1,0 +1,96 @@
+{
+  "task_id": "task_01_decision_retention",
+  "version": "baseline",
+  "timestamp": "2026-04-14T14:46:30.772613",
+  "turns": [
+    {
+      "turn": 1,
+      "user_input": "Please inspect the repo and tell me where the todo filtering logic lives.",
+      "response": "Response to: Please inspect the repo and tell me where the todo...",
+      "context_length": 736,
+      "duration": 0.0015988349914550781
+    },
+    {
+      "turn": 2,
+      "user_input": "We must keep the public CLI unchanged.",
+      "response": "Response to: We must keep the public CLI unchanged....",
+      "context_length": 1057,
+      "duration": 0.0005087852478027344
+    },
+    {
+      "turn": 3,
+      "user_input": "Do not rename any existing exported function.",
+      "response": "Response to: Do not rename any existing exported function....",
+      "context_length": 1399,
+      "duration": 0.0009949207305908203
+    },
+    {
+      "turn": 4,
+      "user_input": "Implement support for filtering todos by exact priority match.",
+      "response": "Response to: Implement support for filtering todos by exact pri...",
+      "context_length": 1768,
+      "duration": 0.001003265380859375
+    },
+    {
+      "turn": 5,
+      "user_input": "Add tests for the new filtering behavior.",
+      "response": "Response to: Add tests for the new filtering behavior....",
+      "context_length": 2098,
+      "duration": 0.0010042190551757812
+    },
+    {
+      "turn": 6,
+      "user_input": "Before finishing, remind me which compatibility constraints we decided to preserve.",
+      "response": "Response to: Before finishing, remind me which compatibility co...",
+      "context_length": 2418,
+      "duration": 0.0010027885437011719
+    }
+  ],
+  "metrics": {
+    "context_compression_ratio": 8.425087108013937,
+    "avg_context_growth_per_turn": 355.1666666666667,
+    "constraint_retention_rate": 0.0,
+    "turns_completed": 6,
+    "errors_count": 0
+  },
+  "context_lengths": [
+    {
+      "turn": 0,
+      "length": 287,
+      "type": "initial"
+    },
+    {
+      "turn": 1,
+      "length": 736,
+      "type": "after_turn"
+    },
+    {
+      "turn": 2,
+      "length": 1057,
+      "type": "after_turn"
+    },
+    {
+      "turn": 3,
+      "length": 1399,
+      "type": "after_turn"
+    },
+    {
+      "turn": 4,
+      "length": 1768,
+      "type": "after_turn"
+    },
+    {
+      "turn": 5,
+      "length": 2098,
+      "type": "after_turn"
+    },
+    {
+      "turn": 6,
+      "length": 2418,
+      "type": "after_turn"
+    }
+  ],
+  "tool_outputs": [],
+  "final_summary": "Response to: Before finishing, remind me which compatibility co...",
+  "errors": []
+}

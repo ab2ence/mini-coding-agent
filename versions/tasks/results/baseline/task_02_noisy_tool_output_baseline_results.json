@@ -1,0 +1,83 @@
+{
+  "task_id": "task_02_noisy_tool_output",
+  "version": "baseline",
+  "timestamp": "2026-04-14T14:47:27.225712",
+  "turns": [
+    {
+      "turn": 1,
+      "user_input": "Inspect the repository and identify the parser entry point.",
+      "response": "Response to: Inspect the repository and identify the parser ent...",
+      "context_length": 709,
+      "duration": 0.0010221004486083984
+    },
+    {
+      "turn": 2,
+      "user_input": "Run the tests and investigate the failure.",
+      "response": "Response to: Run the tests and investigate the failure....",
+      "context_length": 1042,
+      "duration": 0.000995635986328125
+    },
+    {
+      "turn": 3,
+      "user_input": "Fix the bug without changing the test contract.",
+      "response": "Response to: Fix the bug without changing the test contract....",
+      "context_length": 1390,
+      "duration": 0.0010037422180175781
+    },
+    {
+      "turn": 4,
+      "user_input": "Add one regression test.",
+      "response": "Response to: Add one regression test....",
+      "context_length": 1669,
+      "duration": 0.001003265380859375
+    },
+    {
+      "turn": 5,
+      "user_input": "Summarize the root cause in one paragraph.",
+      "response": "Response to: Summarize the root cause in one paragraph....",
+      "context_length": 2002,
+      "duration": 0.0020072460174560547
+    }
+  ],
+  "metrics": {
+    "context_compression_ratio": 6.951388888888889,
+    "avg_context_growth_per_turn": 342.8,
+    "turns_completed": 5,
+    "errors_count": 0
+  },
+  "context_lengths": [
+    {
+      "turn": 0,
+      "length": 288,
+      "type": "initial"
+    },
+    {
+      "turn": 1,
+      "length": 709,
+      "type": "after_turn"
+    },
+    {
+      "turn": 2,
+      "length": 1042,
+      "type": "after_turn"
+    },
+    {
+      "turn": 3,
+      "length": 1390,
+      "type": "after_turn"
+    },
+    {
+      "turn": 4,
+      "length": 1669,
+      "type": "after_turn"
+    },
+    {
+      "turn": 5,
+      "length": 2002,
+      "type": "after_turn"
+    }
+  ],
+  "tool_outputs": [],
+  "final_summary": "Response to: Summarize the root cause in one paragraph....",
+  "errors": []
+}

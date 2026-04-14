@@ -1,0 +1,14 @@
+[
+  {
+    "task_id": "task_01_decision_retention",
+    "error": "Agent module not found: baseline\\mini_coding_agent_original.py"
+  },
+  {
+    "task_id": "task_02_noisy_tool_output",
+    "error": "Agent module not found: baseline\\mini_coding_agent_original.py"
+  },
+  {
+    "task_id": "task_03_long_workflow",
+    "error": "Agent module not found: baseline\\mini_coding_agent_original.py"
+  }
+]

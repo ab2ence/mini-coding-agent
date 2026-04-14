@@ -472,12 +472,19 @@ python versions/tasks/eval_memory.py --tasks . --compare --output results/
 
 **阶段产出**: `versions/with-memory/test_agent_integration.py` - 11个功能测试（全部通过）
 
-#### 5.2 Baseline 测试（原始版本）
-- [ ] 在 baseline 版本上运行 Task 1
-- [ ] 在 baseline 版本上运行 Task 2
-- [ ] 在 baseline 版本上运行 Task 3
-- [ ] 记录 baseline 的上下文长度、token 消耗、任务完成率
-- [ ] 记录 baseline 的关键约束保留情况
+#### 5.2 Baseline 测试（原始版本）✅
+- [x] 在 baseline 版本上运行 Task 1
+- [x] 在 baseline 版本上运行 Task 2
+- [x] 在 baseline 版本上运行 Task 3
+- [x] 记录 baseline 的上下文长度、token 消耗、任务完成率
+- [x] 记录 baseline 的关键约束保留情况
+
+**Baseline 测试结果**:
+| 任务 | 上下文压缩率 | 约束保留率 | 阶段识别准确率 | 上下文增长/轮 |
+|------|-------------|-----------|--------------|-------------|
+| Task 1 | 8.425x | 0% | - | 355 |
+| Task 2 | 6.951x | - | - | 343 |
+| Task 3 | 8.178x | - | 50% | 343 |
 
 #### 5.3 Memory 版本测试
 - [ ] 在 memory 版本上运行 Task 1
@@ -775,7 +782,7 @@ python versions/tasks/eval_memory.py --tasks . --compare --output results/
 ### 🎯 里程碑进度
 
 ```
-[██████████████████████████████████████████████████████████░░░░░] 88% 完成
+[███████████████████████████████████████████████████████████░░░░] 90% 完成
 
 ✅ M1: 环境配置完成
 ✅ M1.5: 代码分支管理完成
@@ -785,8 +792,8 @@ python versions/tasks/eval_memory.py --tasks . --compare --output results/
 ✅ M5: README 文档完成 (完整文档 ~1000行)
 ✅ M6: 测试框架完成 (按笔试要求重新设计)
 ✅ M7: 功能测试完成 (11个集成测试全部通过)
-⏳ M8: Baseline 测试 (下一步)
-⏳ M9: Memory 版本测试
+✅ M8: Baseline 测试 (3个任务全部完成)
+⏳ M9: Memory 版本测试 (下一步)
 ⏳ M10: 对比分析
 ⏳ M11: 结果报告与最终整理
 ```

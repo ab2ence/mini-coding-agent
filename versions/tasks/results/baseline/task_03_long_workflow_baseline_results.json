@@ -1,0 +1,96 @@
+{
+  "task_id": "task_03_long_workflow",
+  "version": "baseline",
+  "timestamp": "2026-04-14T14:48:15.486558",
+  "turns": [
+    {
+      "turn": 1,
+      "user_input": "Explore the repository and explain how config loading currently works.",
+      "response": "Response to: Explore the repository and explain how config load...",
+      "context_length": 730,
+      "duration": 0.0010030269622802734
+    },
+    {
+      "turn": 2,
+      "user_input": "We want a fallback order: env var > local config > default config.",
+      "response": "Response to: We want a fallback order: env var > local config >...",
+      "context_length": 1103,
+      "duration": 0.0
+    },
+    {
+      "turn": 3,
+      "user_input": "Please implement the fallback behavior.",
+      "response": "Response to: Please implement the fallback behavior....",
+      "context_length": 1427,
+      "duration": 0.0012884140014648438
+    },
+    {
+      "turn": 4,
+      "user_input": "Add tests for the precedence rules.",
+      "response": "Response to: Add tests for the precedence rules....",
+      "context_length": 1739,
+      "duration": 0.000995635986328125
+    },
+    {
+      "turn": 5,
+      "user_input": "Run tests and fix any issues.",
+      "response": "Response to: Run tests and fix any issues....",
+      "context_length": 2033,
+      "duration": 0.0010030269622802734
+    },
+    {
+      "turn": 6,
+      "user_input": "Now summarize what changed, which files were involved, and what risk remains.",
+      "response": "Response to: Now summarize what changed, which files were invol...",
+      "context_length": 2347,
+      "duration": 0.0010042190551757812
+    }
+  ],
+  "metrics": {
+    "context_compression_ratio": 8.177700348432056,
+    "avg_context_growth_per_turn": 343.3333333333333,
+    "phase_awareness_accuracy": 0.5,
+    "turns_completed": 6,
+    "errors_count": 0
+  },
+  "context_lengths": [
+    {
+      "turn": 0,
+      "length": 287,
+      "type": "initial"
+    },
+    {
+      "turn": 1,
+      "length": 730,
+      "type": "after_turn"
+    },
+    {
+      "turn": 2,
+      "length": 1103,
+      "type": "after_turn"
+    },
+    {
+      "turn": 3,
+      "length": 1427,
+      "type": "after_turn"
+    },
+    {
+      "turn": 4,
+      "length": 1739,
+      "type": "after_turn"
+    },
+    {
+      "turn": 5,
+      "length": 2033,
+      "type": "after_turn"
+    },
+    {
+      "turn": 6,
+      "length": 2347,
+      "type": "after_turn"
+    }
+  ],
+  "tool_outputs": [],
+  "final_summary": "Response to: Now summarize what changed, which files were invol...",
+  "errors": []
+}
