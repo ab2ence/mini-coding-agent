@@ -1,0 +1,52 @@
+{
+  "id": "task_03_long_workflow",
+  "name": "Long Workflow",
+  "description": "Test if the agent can maintain task state awareness throughout a multi-phase coding workflow.",
+  "workspace": "task_workspaces/repo_config_loader",
+  "system_goal": "Implement a new config fallback feature across a multi-step workflow.",
+  "turns": [
+    "Explore the repository and explain how config loading currently works.",
+    "We want a fallback order: env var > local config > default config.",
+    "Please implement the fallback behavior.",
+    "Add tests for the precedence rules.",
+    "Run tests and fix any issues.",
+    "Now summarize what changed, which files were involved, and what risk remains."
+  ],
+  "checks": {
+    "must_modify_files": [
+      "config/__init__.py",
+      "tests/test_loader_precedence.py"
+    ],
+    "final_must_contain": [
+      "env var > local config > default config"
+    ],
+    "test_command": "pytest -q",
+    "expect_metrics": {
+      "phase_awareness_accuracy_gt": 0.8,
+      "final_summary_accuracy_gt": 0.8
+    }
+  },
+  "expected_outcome": {
+    "task_completed": true,
+    "phase_tracking_accurate": true,
+    "tests_pass": true
+  },
+  "baseline_metrics": {
+    "phase_awareness_accuracy": 0.4,
+    "final_summary_accuracy": 0.3,
+    "task_state_clarity": "low"
+  },
+  "target_metrics": {
+    "phase_awareness_accuracy": 0.9,
+    "final_summary_accuracy": 0.9,
+    "task_state_clarity": "high"
+  },
+  "workflow_phases": [
+    "exploration",
+    "requirements",
+    "implementation",
+    "testing",
+    "fixing",
+    "summary"
+  ]
+}

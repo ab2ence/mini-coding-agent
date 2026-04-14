@@ -1,0 +1,48 @@
+{
+  "id": "task_01_decision_retention",
+  "name": "Decision Retention",
+  "description": "Test if the agent can retain key constraints and decisions throughout a multi-turn conversation.",
+  "workspace": "task_workspaces/repo_todo_app",
+  "system_goal": "Modify the todo filtering behavior and keep backward compatibility.",
+  "turns": [
+    "Please inspect the repo and tell me where the todo filtering logic lives.",
+    "We must keep the public CLI unchanged.",
+    "Do not rename any existing exported function.",
+    "Implement support for filtering todos by exact priority match.",
+    "Add tests for the new filtering behavior.",
+    "Before finishing, remind me which compatibility constraints we decided to preserve."
+  ],
+  "checks": {
+    "must_modify_files": [
+      "todo/__init__.py",
+      "tests/test_filtering.py"
+    ],
+    "must_not_modify_files": [
+      "todo/cli.py"
+    ],
+    "final_must_contain": [
+      "keep the public CLI unchanged",
+      "do not rename any existing exported function"
+    ],
+    "test_command": "pytest -q",
+    "expect_metrics": {
+      "constraint_retention_rate_gt": 0.9
+    }
+  },
+  "expected_outcome": {
+    "task_completed": true,
+    "constraints_preserved": true,
+    "cli_backward_compatible": true,
+    "tests_pass": true
+  },
+  "baseline_metrics": {
+    "constraint_retention_rate": 0.3,
+    "context_growth": "fast",
+    "final_summary_accuracy": 0.4
+  },
+  "target_metrics": {
+    "constraint_retention_rate": 0.9,
+    "context_growth": "controlled",
+    "final_summary_accuracy": 0.9
+  }
+}

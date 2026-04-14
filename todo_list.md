@@ -347,148 +347,130 @@ Memory:
 
 ---
 
-### Phase 5: 验证与测试 🧪
+### Phase 5: 验证与测试 🧪 ✅
 
-#### 5.0 测试套件管理 📋（集中进度追踪）
+> **Phase 5.1 测试框架已完成！** - 按照笔试要求重新设计测试框架
 
-##### 测试套件结构
+#### 5.0 测试套件管理 📋 ✅
+
+##### 测试套件结构 (已重新设计) ✅
 
 ```
-versions/
-├── baseline/                      # Baseline 版本测试（无优化）
-│   └── tests/
-│       ├── task_01_decision_retention/
-│       │   ├── test_task1.py              # 测试脚本
-│       │   ├── test_results.json          # 测试结果
-│       │   └── README.md
-│       ├── task_02_noisy_tool_output/
-│       │   ├── test_task2.py              # 测试脚本
-│       │   ├── test_results.json          # 测试结果
-│       │   └── README.md
-│       └── task_03_long_workflow/
-│           ├── test_task3.py              # 测试脚本
-│           ├── test_results.json          # 测试结果
-│           └── README.md
+versions/tasks/                              # 统一测试框架
+├── README.md                                 # 测试文档
+├── run_task.py                               # 任务运行脚本
+├── eval_memory.py                            # 评测脚本
 │
-├── with-memory/                  # With-Memory 版本测试（优化后）
-│   └── tests/
-│       ├── task_01_decision_retention/
-│       │   ├── test_task1_with_memory.py  # 测试脚本
-│       │   ├── test_results_with_memory.json  # 测试结果
-│       │   └── README.md
-│       ├── task_02_noisy_tool_output/
-│       │   ├── test_task2_with_memory.py  # 测试脚本
-│       │   ├── test_results_with_memory.json  # 测试结果
-│       │   └── README.md
-│       └── task_03_long_workflow/
-│           ├── test_task3_with_memory.py  # 测试脚本
-│           ├── test_results_with_memory.json  # 测试结果
-│           └── README.md
+├── task_01_decision_retention.json           # Task 1 配置
+├── task_02_noisy_tool_output.json            # Task 2 配置
+├── task_03_long_workflow.json                # Task 3 配置
 │
-├── tests/                       # 测试套件总览
-│   └── README.md
+├── task_workspaces/                         # 真实任务工作区
+│   ├── repo_todo_app/                        # Task 1: 真实 todo 应用
+│   │   ├── todo/
+│   │   │   ├── __init__.py                  # 过滤逻辑
+│   │   │   └── cli.py                       # CLI（不可修改）
+│   │   └── tests/
+│   │       └── test_filtering.py            # 测试用例
+│   │
+│   ├── repo_log_parser/                      # Task 2: 真实解析器
+│   │   ├── parser/
+│   │   │   └── __init__.py                  # 解析逻辑
+│   │   └── tests/
+│   │       └── test_parser_regression.py    # 测试用例
+│   │
+│   └── repo_config_loader/                   # Task 3: 真实配置加载器
+│       ├── config/
+│       │   └── __init__.py                  # 配置逻辑
+│       └── tests/
+│           └── test_loader_precedence.py      # 测试用例
 │
-└── run_all_tests.py            # 统一测试运行脚本
+└── results/                                  # 结果目录
+    ├── baseline/                             # Baseline 结果
+    └── with-memory/                          # Memory 结果
 ```
 
-##### 5.0.1 Task 1: Decision Retention 测试任务
+##### 5.0.1 Task 1: Decision Retention ✅
 
-**考察**: 关键约束和决策保留能力
+**考察**: 关键约束和决策保留能力 ✅
 
-| 版本 | 测试文件 | 结果文件 | 状态 |
-|------|---------|---------|------|
-| **Baseline** | `test_task1.py` | `test_results.json` | ☐ 待运行 |
-| **With-Memory** | `test_task1_with_memory.py` | `test_results_with_memory.json` | ☐ 待运行 |
-
-**Baseline 预期指标**:
-- 约束保留率: < 50%
-- 上下文增长: 快
-
-**With-Memory 预期指标**:
-- 约束保留率: > 90%
-- 上下文增长: 受控
+| 检查项 | 配置 | 状态 |
+|--------|------|------|
+| **must_modify_files** | `["todo/__init__.py", "tests/test_filtering.py"]` | ✅ |
+| **must_not_modify_files** | `["todo/cli.py"]` | ✅ |
+| **final_must_contain** | `"keep the public CLI unchanged"` 等 | ✅ |
+| **test_command** | `pytest -q` | ✅ |
 
 **运行命令**:
 ```bash
-# Baseline
-python versions/baseline/tests/task_01_decision_retention/test_task1.py
+# 运行任务
+python versions/tasks/run_task.py --task task_01 --version baseline
+python versions/tasks/run_task.py --task task_01 --version with-memory
 
-# With-Memory
-python versions/with-memory/tests/task_01_decision_retention/test_task1_with_memory.py
+# 评测
+python versions/tasks/eval_memory.py --task task_01_decision_retention.json --version with-memory
 ```
 
-##### 5.0.2 Task 2: Noisy Tool Output 测试任务
+##### 5.0.2 Task 2: Noisy Tool Output ✅
 
-**考察**: 工具输出压缩能力
+**考察**: 工具输出压缩能力 ✅
 
-| 版本 | 测试文件 | 结果文件 | 状态 |
-|------|---------|---------|------|
-| **Baseline** | `test_task2.py` | `test_results.json` | ☐ 待运行 |
-| **With-Memory** | `test_task2_with_memory.py` | `test_results_with_memory.json` | ☐ 待运行 |
-
-**Baseline 预期指标**:
-- 压缩率: 1.0（无压缩）
-- 上下文增长: 快
-
-**With-Memory 预期指标**:
-- 压缩率: < 0.6 ⭐
-- 上下文增长: 受控
+| 检查项 | 配置 | 状态 |
+|--------|------|------|
+| **must_modify_files** | `["parser/__init__.py", "tests/test_parser_regression.py"]` | ✅ |
+| **final_must_contain** | `"null handling", "JSON parsing"` | ✅ |
+| **test_command** | `pytest -q` | ✅ |
+| **compressed_tool_output_ratio_lt** | < 0.6 ⭐ | ✅ |
 
 **运行命令**:
 ```bash
-# Baseline
-python versions/baseline/tests/task_02_noisy_tool_output/test_task2.py
-
-# With-Memory
-python versions/with-memory/tests/task_02_noisy_tool_output/test_task2_with_memory.py
+python versions/tasks/run_task.py --task task_02 --version with-memory
+python versions/tasks/eval_memory.py --task task_02_noisy_tool_output.json --version with-memory
 ```
 
-##### 5.0.3 Task 3: Long Workflow 测试任务
+##### 5.0.3 Task 3: Long Workflow ✅
 
-**考察**: 任务状态分段管理能力
+**考察**: 任务状态分段管理能力 ✅
 
-| 版本 | 测试文件 | 结果文件 | 状态 |
-|------|---------|---------|------|
-| **Baseline** | `test_task3.py` | `test_results.json` | ☐ 待运行 |
-| **With-Memory** | `test_task3_with_memory.py` | `test_results_with_memory.json` | ☐ 待运行 |
-
-**Baseline 预期指标**:
-- 阶段识别准确率: < 50%
-- 最终总结准确率: < 50%
-
-**With-Memory 预期指标**:
-- 阶段识别准确率: > 80%
-- 最终总结准确率: > 80%
+| 检查项 | 配置 | 状态 |
+|--------|------|------|
+| **must_modify_files** | `["config/__init__.py", "tests/test_loader_precedence.py"]` | ✅ |
+| **final_must_contain** | `"env var > local config > default config"` | ✅ |
+| **test_command** | `pytest -q` | ✅ |
+| **phase_awareness_accuracy_gt** | > 0.8 | ✅ |
 
 **运行命令**:
 ```bash
-# Baseline
-python versions/baseline/tests/task_03_long_workflow/test_task3.py
-
-# With-Memory
-python versions/with-memory/tests/task_03_long_workflow/test_task3_with_memory.py
+python versions/tasks/run_task.py --task task_03 --version with-memory
+python versions/tasks/eval_memory.py --task task_03_long_workflow.json --version with-memory
 ```
 
-##### 5.0.4 测试结果汇总
+##### 5.0.4 统一运行命令 ✅
 
-| 测试任务 | Baseline 状态 | With-Memory 状态 | 对比分析 |
-|---------|--------------|-----------------|---------|
-| **Task 1: Decision Retention** | ☐ | ☐ | ☐ |
-| **Task 2: Noisy Tool Output** | ☐ | ☐ | ☐ |
-| **Task 3: Long Workflow** | ☐ | ☐ | ☐ |
-
-**统一运行命令**:
 ```bash
-cd versions
-python run_all_tests.py
+# 运行所有任务（单版本）
+python versions/tasks/run_task.py --all --version with-memory --output results/with-memory
+
+# 评测所有任务
+python versions/tasks/eval_memory.py --tasks . --version with-memory --output results/with-memory
+
+# 对比 Baseline 和 Memory
+python versions/tasks/eval_memory.py --tasks . --compare --output results/
 ```
 
-**汇总结果文件**: `versions/test_summary.json`
+**阶段产出**: ✅
+- `versions/tasks/` - 完整测试框架
+- `versions/tasks/task_workspaces/` - 3个真实任务工作区
+- `versions/tasks/run_task.py` - 任务运行脚本
+- `versions/tasks/eval_memory.py` - 评测脚本
+- `versions/tasks/README.md` - 测试文档
 
-#### 5.1 功能测试
-- [ ] 测试 Memory Manager 基本功能
-- [ ] 测试与 agent 集成
-- [ ] 验证各功能正常工作
+#### 5.1 功能测试 ✅
+- [x] 测试 Memory Manager 基本功能
+- [x] 测试与 agent 集成
+- [x] 验证各功能正常工作
+
+**阶段产出**: `versions/with-memory/test_agent_integration.py` - 11个功能测试（全部通过）
 
 #### 5.2 Baseline 测试（原始版本）
 - [ ] 在 baseline 版本上运行 Task 1
@@ -523,13 +505,108 @@ python run_all_tests.py
 
 ### Phase 6: 结果报告与最终整理 📤
 
-#### 6.1 结果报告编写
-- [ ] 收集压缩前后上下文长度对比
-- [ ] 整理成功案例
-- [ ] 整理失败/退化案例
-- [ ] 分析关键权衡点
-- [ ] 说明局限性和下一步改进方向
-- [ ] 生成结果报告 (REPORTS/RESULTS_REPORT.md)
+> **📋 结果报告具体要求**（根据笔试介绍.md第九部分）
+>
+> 结果报告必须包含以下 **4 项核心内容**：
+
+#### 6.1.1 压缩前后上下文长度对比 📊
+- [ ] **数据收集**:
+  - [ ] Baseline 版本: 3个任务的上下文长度记录
+  - [ ] Memory 版本: 3个任务的上下文长度记录
+  - [ ] 每轮对话的 token 消耗统计
+  - [ ] Memory 压缩触发后的 token 变化
+- [ ] **对比表格格式**:
+  ```
+  | 任务 | Baseline (tokens) | Memory (tokens) | 压缩率 |
+  |------|-------------------|-----------------|--------|
+  | Task 1 | X | Y | Z% |
+  | Task 2 | X | Y | Z% |
+  | Task 3 | X | Y | Z% |
+  | 平均  | X | Y | Z% |
+  ```
+- [ ] **分析说明**:
+  - [ ] 压缩效果总结
+  - [ ] 各任务压缩差异原因分析
+
+#### 6.1.2 成功案例分析 ✅
+- [ ] **选择标准**: 选取 Memory 优化效果最明显的任务
+- [ ] **案例格式**:
+  ```
+  ### 成功案例: [Task X - 具体名称]
+  
+  **任务描述**: [简述任务内容]
+  
+  **Baseline 表现**: [原始版本的问题]
+  
+  **Memory 优化效果**: [具体改进点]
+  
+  **关键指标提升**: 
+  - 上下文压缩: XX%
+  - 约束保留率: XX%
+  - 任务完成质量: [描述]
+  
+  **成功原因分析**: [为什么成功]
+  ```
+- [ ] **至少包含**:
+  - [ ] Task 1: 关键约束保留成功案例
+  - [ ] 或 Task 2: Tool Output 压缩成功案例
+  - [ ] 或 Task 3: 任务状态分段成功案例
+
+#### 6.1.3 失败/退化案例分析 ❌
+- [ ] **选择标准**: 选取 Memory 优化效果不佳或产生副作用的任务
+- [ ] **案例格式**:
+  ```
+  ### 失败/退化案例: [Task X - 具体名称]
+  
+  **任务描述**: [简述任务内容]
+  
+  **预期效果**: [期望达到的目标]
+  
+  **实际表现**: [实际出现的问题]
+  
+  **退化程度**: [轻微/中度/严重]
+  
+  **原因分析**: 
+  - [原因1]
+  - [原因2]
+  
+  **改进方向**: [下一步如何解决]
+  ```
+- [ ] **至少包含**:
+  - [ ] 1个失败案例
+  - [ ] 明确退化程度评估
+  - [ ] 可行的改进建议
+
+#### 6.1.4 关键权衡点说明 ⚖️
+- [ ] **权衡维度选择**:
+  - [ ] 压缩率 vs 信息保留完整度
+  - [ ] 摘要生成频率 vs Token 消耗
+  - [ ] 自动化压缩 vs 人工审核
+  - [ ] 通用压缩策略 vs 任务特定优化
+- [ ] **权衡分析格式**:
+  ```
+  ### 关键权衡: [权衡名称]
+  
+  **权衡背景**: [为什么存在这个权衡]
+  
+  **权衡的利弊**:
+  - 优点: [列出]
+  - 缺点: [列出]
+  
+  **我的选择**: [选择了哪一方]
+  
+  **选择理由**: [为什么这么选]
+  
+  **验证方式**: [如何验证选择正确性]
+  ```
+- [ ] **必须包含**: 至少1个核心权衡点的深入分析
+
+#### 6.1.5 结果报告汇总
+- [ ] 整合以上4部分内容
+- [ ] 添加报告摘要（100字内）
+- [ ] 添加结论（100字内）
+- [ ] 添加下一步改进计划
+- [ ] 生成完整报告: `REPORTS/RESULTS_REPORT.md`
 
 #### 6.2 过程记录
 - [ ] 整理 prompt 日志
@@ -552,9 +629,10 @@ python run_all_tests.py
 - [ ] ☐ 原始版本代码已保留（versions/baseline/）
 - [ ] ☐ README 已完成
 - [ ] ☐ 结果报告已包含
-  - [ ] ☐ Before/After 指标对比表
-  - [ ] ☐ 成功案例
-  - [ ] ☐ 失败/退化案例
+  - [ ] ☐ 压缩前后上下文长度对比表
+  - [ ] ☐ 至少1个成功案例（含指标和分析）
+  - [ ] ☐ 至少1个失败/退化案例（含原因和改进）
+  - [ ] ☐ 至少1个关键权衡点分析
 - [ ] ☐ 过程记录已包含
 - [ ] ☐ 运行说明已提供
 - [ ] ☐ 代码可读性检查通过
@@ -577,6 +655,7 @@ python run_all_tests.py
 | **修改后的 Agent** | ✅ | `versions/with-memory/mini_coding_agent.py` (~1100行) |
 | **单元测试** | ✅ | `versions/with-memory/test_memory_manager.py` (45个测试) |
 | **README 文档** | ✅ | `versions/with-memory/README.md` (~1000行) |
+| **测试框架** | ✅ | `versions/tasks/` (完整测试框架) |
 | **结果报告** | ☐ | `REPORTS/RESULTS_REPORT.md` |
 | **过程记录** | ☐ | `REPORTS/PROCESS_RECORD.md` |
 | README | ☐ | 项目根目录 |
@@ -626,20 +705,33 @@ python run_all_tests.py
 
 ## 🔜 下一步
 
-### 🎯 Phase 5: 验证与测试
+### 🎯 Phase 5.2: 运行测试 + 对比分析
 
-**下一步任务**: 开始 Baseline 和 Memory 版本的对比测试
+**下一步任务**: 运行测试并收集对比数据
 
-**测试任务**:
-- Task 1: Decision Retention (约束保留)
-- Task 2: Noisy Tool Output (工具输出压缩)
-- Task 3: Long Workflow (任务状态分段)
+**测试步骤**:
+1. 运行 Baseline 版本测试
+2. 运行 Memory 版本测试
+3. 收集评测指标
+4. 生成对比报告
 
 **预期产出**:
 - Before/After 指标对比
 - 至少一个成功案例
 - 至少一个失败/退化案例
 - 完整的性能评估报告
+
+**运行命令**:
+```bash
+# 1. 运行 Baseline 测试
+python versions/tasks/run_task.py --all --version baseline --output results/baseline
+
+# 2. 运行 Memory 测试
+python versions/tasks/run_task.py --all --version with-memory --output results/with-memory
+
+# 3. 对比评测
+python versions/tasks/eval_memory.py --tasks . --compare --output results/
+```
 
 ### ✅ 已完成更新
 
@@ -683,7 +775,7 @@ python run_all_tests.py
 ### 🎯 里程碑进度
 
 ```
-[████████████████████████████████████████████████░░░░░░░░░░░░] 70% 完成
+[██████████████████████████████████████████████████████████░░░░░] 88% 完成
 
 ✅ M1: 环境配置完成
 ✅ M1.5: 代码分支管理完成
@@ -691,6 +783,10 @@ python run_all_tests.py
 ✅ M3: 核心代码实现完成 (8个组件 + 45个测试全部通过)
 ✅ M4: Agent 集成完成
 ✅ M5: README 文档完成 (完整文档 ~1000行)
-⏳ M6: Baseline + Memory 测试 (下一步)
-⏳ M7: 结果报告与最终整理
+✅ M6: 测试框架完成 (按笔试要求重新设计)
+✅ M7: 功能测试完成 (11个集成测试全部通过)
+⏳ M8: Baseline 测试 (下一步)
+⏳ M9: Memory 版本测试
+⏳ M10: 对比分析
+⏳ M11: 结果报告与最终整理
 ```

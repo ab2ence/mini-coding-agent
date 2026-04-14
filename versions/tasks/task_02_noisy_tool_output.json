@@ -1,0 +1,49 @@
+{
+  "id": "task_02_noisy_tool_output",
+  "name": "Noisy Tool Output",
+  "description": "Test if the agent can compress noisy tool outputs while retaining key diagnostic information.",
+  "workspace": "task_workspaces/repo_log_parser",
+  "system_goal": "Fix a failing parser test with very noisy logs.",
+  "turns": [
+    "Inspect the repository and identify the parser entry point.",
+    "Run the tests and investigate the failure.",
+    "Fix the bug without changing the test contract.",
+    "Add one regression test.",
+    "Summarize the root cause in one paragraph."
+  ],
+  "checks": {
+    "must_modify_files": [
+      "parser/__init__.py",
+      "tests/test_parser_regression.py"
+    ],
+    "final_must_contain": [
+      "null handling",
+      "JSON parsing"
+    ],
+    "test_command": "pytest -q",
+    "expect_metrics": {
+      "compressed_tool_output_ratio_lt": 0.6,
+      "test_pass": true
+    }
+  },
+  "expected_outcome": {
+    "task_completed": true,
+    "tests_pass": true,
+    "noisy_output_compressed": true
+  },
+  "baseline_metrics": {
+    "compression_ratio": 1.0,
+    "context_growth": "fast",
+    "tool_output_in_context": "large"
+  },
+  "target_metrics": {
+    "compression_ratio": 0.6,
+    "context_growth": "controlled",
+    "tool_output_in_context": "minimal"
+  },
+  "noisy_output_patterns": {
+    "warning_lines": 50,
+    "info_lines": 100,
+    "key_error_lines": 3
+  }
+}
