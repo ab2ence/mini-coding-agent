@@ -1,5 +1,7 @@
 {
-  "constraint_retention_rate": 0.0,
-  "turns_completed": 0,
-  "errors_count": 1
+  "context_compression_ratio": 347.3170731707317,
+  "avg_context_growth_per_turn": 16565.5,
+  "constraint_retention_rate": 0.5,
+  "turns_completed": 6,
+  "errors_count": 0
 }

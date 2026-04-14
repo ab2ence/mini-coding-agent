@@ -1,0 +1,185 @@
+[
+  {
+    "task_id": "task_01_decision_retention",
+    "version": "with-memory",
+    "timestamp": "2026-04-14T17:07:23.141909",
+    "turns": [
+      {
+        "turn": 1,
+        "user_input": "Please inspect the repo and tell me where the todo filtering logic lives.",
+        "response": "The todo filtering logic lives in `todo/__init__.py` in the `filter_todos` function (lines 5-22). This function filters a list of todo dicts by an optional priority parameter. The CLI command `todo filter` in `todo/cli.py` (lines 58-68) calls this function.",
+        "context_length": 8454,
+        "duration": 17.574662685394287
+      },
+      {
+        "turn": 2,
+        "user_input": "We must keep the public CLI unchanged.",
+        "response": "The public CLI interface is defined in `todo/cli.py` and must remain backward compatible. The filtering logic itself is implemented in `todo/__init__.py` in the `filter_todos` function (lines 5-22). The CLI command `todo filter` calls this function but doesn't expose any implementation details, so changes to the filtering logic can be made as long as the CLI interface (command names, arguments, and output format) stays the same.",
+        "context_length": 9331,
+        "duration": 5.77742862701416
+      },
+      {
+        "turn": 3,
+        "user_input": "Do not rename any existing exported function.",
+        "response": "The existing exported function `filter_todos` in `todo/__init__.py` will not be renamed. The function is part of the module's public API (included in `__all__`) and is used by the CLI. Any modifications to the filtering logic will preserve this function name and its signature to maintain backward compatibility.",
+        "context_length": 9888,
+        "duration": 4.5598766803741455
+      },
+      {
+        "turn": 4,
+        "user_input": "Implement support for filtering todos by exact priority match.",
+        "response": "The todo filtering logic in `todo/__init__.py` already implements exact priority matching. The `filter_todos` function (lines 5-22) filters todos by exact priority equality when a priority is provided. No changes are required as the requested functionality is already implemented.",
+        "context_length": 24164,
+        "duration": 54.13109040260315
+      },
+      {
+        "turn": 5,
+        "user_input": "Add tests for the new filtering behavior.",
+        "response": "The filtering logic in `todo/__init__.py` already implements exact priority matching, and comprehensive tests for this behavior already exist in `tests/test_filtering.py`. All 7 filtering tests pass successfully.",
+        "context_length": 18204,
+        "duration": 73.99424266815186
+      },
+      {
+        "turn": 6,
+        "user_input": "Before finishing, remind me which compatibility constraints we decided to preserve.",
+        "response": "We decided to preserve the following compatibility constraints:\n\n1. **Public CLI unchanged**: The command-line interface in `todo/cli.py` must remain fully backward compatible - no changes to commands, arguments, or output formats.\n2. **No renaming of exported functions**: The `filter_todos` function (and any other exported functions) must keep their current names to maintain the module's public API stability.\n3. **Existing filtering behavior preserved**: The `filter_todos` function's exact priority matching logic should remain as-is, since it already implements the requested filtering functionality.\n\nThese constraints ensure that existing users and integrations continue to work without modification.",
+        "context_length": 19240,
+        "duration": 7.142739772796631
+      }
+    ],
+    "metrics": {
+      "context_compression_ratio": 67.0383275261324,
+      "avg_context_growth_per_turn": 3158.8333333333335,
+      "constraint_retention_rate": 0.0,
+      "turns_completed": 6,
+      "errors_count": 0
+    },
+    "context_lengths": [
+      {
+        "turn": 0,
+        "length": 287,
+        "type": "initial"
+      },
+      {
+        "turn": 1,
+        "length": 8454,
+        "type": "after_turn"
+      },
+      {
+        "turn": 2,
+        "length": 9331,
+        "type": "after_turn"
+      },
+      {
+        "turn": 3,
+        "length": 9888,
+        "type": "after_turn"
+      },
+      {
+        "turn": 4,
+        "length": 24164,
+        "type": "after_turn"
+      },
+      {
+        "turn": 5,
+        "length": 18204,
+        "type": "after_turn"
+      },
+      {
+        "turn": 6,
+        "length": 19240,
+        "type": "after_turn"
+      }
+    ],
+    "tool_outputs": [],
+    "final_summary": "We decided to preserve the following compatibility constraints:\n\n1. **Public CLI unchanged**: The command-line interface in `todo/cli.py` must remain fully backward compatible - no changes to commands, arguments, or output formats.\n2. **No renaming of exported functions**: The `filter_todos` function (and any other exported functions) must keep their current names to maintain the module's public API stability.\n3. **Existing filtering behavior preserved**: The `filter_todos` function's exact priority matching logic should remain as-is, since it already implements the requested filtering functionality.\n\nThese constraints ensure that existing users and integrations continue to work without modification.",
+    "errors": []
+  },
+  {
+    "task_id": "task_02_noisy_tool_output",
+    "version": "with-memory",
+    "timestamp": "2026-04-14T17:10:07.025599",
+    "turns": [
+      {
+        "turn": 1,
+        "user_input": "Inspect the repository and identify the parser entry point.",
+        "response": "The parser entry point is the `parse_logs` function in `parser/__init__.py` (line 135). This function accepts log data as a string and an optional format parameter (default 'auto'), and returns a list of parsed log entries. It supports JSON, XML, and key-value formats, with auto-detection when format is 'auto'.",
+        "context_length": 11632,
+        "duration": 17.307821035385132
+      },
+      {
+        "turn": 2,
+        "user_input": "Run the tests and investigate the failure.",
+        "response": "Stopped after reaching the step limit without a final answer.",
+        "context_length": 32907,
+        "duration": 75.1919093132019
+      },
+      {
+        "turn": 3,
+        "user_input": "Fix the bug without changing the test contract.",
+        "response": "Stopped after reaching the step limit without a final answer.",
+        "context_length": 50081,
+        "duration": 77.98282122612
+      },
+      {
+        "turn": 4,
+        "user_input": "Add one regression test.",
+        "response": "Stopped after reaching the step limit without a final answer.",
+        "context_length": 119746,
+        "duration": 77.09337496757507
+      },
+      {
+        "turn": 5,
+        "user_input": "Summarize the root cause in one paragraph.",
+        "response": "The root cause is that the test `test_invalid_utf8_byte` attempts to decode invalid UTF-8 bytes (specifically `b'\\xff\\xfe'`) using `decode('utf-8', errors='strict')`, which raises a `UnicodeDecodeError` before the parser is even called. The parser's `parse_json` function expects a valid UTF-8 string as input, but the test is incorrectly constructing the input by forcing a decode error, causing the test itself to fail during setup rather than during parsing. The bug is in the test's implementation, not the parser.",
+        "context_length": 15883,
+        "duration": 73.42356967926025
+      }
+    ],
+    "metrics": {
+      "context_compression_ratio": 55.14930555555556,
+      "avg_context_growth_per_turn": 3119.0,
+      "turns_completed": 5,
+      "errors_count": 0
+    },
+    "context_lengths": [
+      {
+        "turn": 0,
+        "length": 288,
+        "type": "initial"
+      },
+      {
+        "turn": 1,
+        "length": 11632,
+        "type": "after_turn"
+      },
+      {
+        "turn": 2,
+        "length": 32907,
+        "type": "after_turn"
+      },
+      {
+        "turn": 3,
+        "length": 50081,
+        "type": "after_turn"
+      },
+      {
+        "turn": 4,
+        "length": 119746,
+        "type": "after_turn"
+      },
+      {
+        "turn": 5,
+        "length": 15883,
+        "type": "after_turn"
+      }
+    ],
+    "tool_outputs": [],
+    "final_summary": "The root cause is that the test `test_invalid_utf8_byte` attempts to decode invalid UTF-8 bytes (specifically `b'\\xff\\xfe'`) using `decode('utf-8', errors='strict')`, which raises a `UnicodeDecodeError` before the parser is even called. The parser's `parse_json` function expects a valid UTF-8 string as input, but the test is incorrectly constructing the input by forcing a decode error, causing the test itself to fail during setup rather than during parsing. The bug is in the test's implementation, not the parser.",
+    "errors": []
+  },
+  {
+    "task_id": "task_03_long_workflow",
+    "error": "'gbk' codec can't encode character '\\u2011' in position 1051: illegal multibyte sequence"
+  }
+]

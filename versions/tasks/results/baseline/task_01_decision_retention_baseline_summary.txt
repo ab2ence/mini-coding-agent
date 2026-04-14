@@ -1,0 +1,6 @@
+The compatibility constraints we decided to preserve are:
+
+1. Keep the public CLI interface unchanged (as stated in `todo/cli.py` with the comment "This interface MUST remain backward compatible")
+2. Do not rename any existing exported functions (specifically `filter_todos` in `todo/__init__.py`)
+
+The filtering logic already supports exact priority matching through the `filter_todos` function, which uses exact equality comparison (`todo.get('priority') == priority`). This maintains compatibility while providing the requested functionality.

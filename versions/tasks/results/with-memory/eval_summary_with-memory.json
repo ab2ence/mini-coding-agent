@@ -1,0 +1,177 @@
+{
+  "version": "with-memory",
+  "timestamp": "2026-04-14T17:37:04.908923",
+  "total_tasks": 3,
+  "passed_tasks": 1,
+  "failed_tasks": 2,
+  "task_results": [
+    {
+      "task_id": "task_01_decision_retention",
+      "version": "with-memory",
+      "timestamp": "2026-04-14T17:37:04.908923",
+      "checks": {
+        "file_modifications": {
+          "must_modify_checked": true,
+          "must_not_modify_checked": true,
+          "passed": false,
+          "details": [
+            "✓ Modified: todo/__init__.py",
+            "✓ Modified: tests/test_filtering.py",
+            "✗ Should not modify: todo/cli.py"
+          ]
+        },
+        "final_content": {
+          "checked": true,
+          "passed": false,
+          "details": [
+            "✗ Missing: keep the public CLI unchanged",
+            "✗ Missing: do not rename any existing exported function"
+          ],
+          "matched": []
+        },
+        "test_command": {
+          "command": "pytest -q",
+          "executed": true,
+          "passed": true,
+          "output": "............                                                             [100%]\n12 passed in 0.02s\n",
+          "error": "",
+          "workspace_path": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces\\repo_todo_app",
+          "debug": {
+            "pythonpath": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces",
+            "cwd": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces\\repo_todo_app",
+            "returncode": 0
+          }
+        },
+        "metrics": {
+          "checked": true,
+          "passed": true,
+          "metrics": {},
+          "details": [
+            "? constraint_retention_rate_gt: No data"
+          ]
+        }
+      },
+      "metrics": {
+        "context_compression_ratio": 67.0383275261324,
+        "avg_context_growth_per_turn": 3158.8333333333335,
+        "constraint_retention_rate": 0.0,
+        "turns_completed": 6,
+        "errors_count": 0
+      },
+      "passed": false,
+      "details": []
+    },
+    {
+      "task_id": "task_02_noisy_tool_output",
+      "version": "with-memory",
+      "timestamp": "2026-04-14T17:37:05.253503",
+      "checks": {
+        "file_modifications": {
+          "must_modify_checked": true,
+          "must_not_modify_checked": false,
+          "passed": true,
+          "details": [
+            "✓ Modified: parser/__init__.py",
+            "✓ Modified: tests/test_parser_regression.py"
+          ]
+        },
+        "final_content": {
+          "checked": true,
+          "passed": false,
+          "details": [
+            "✗ Missing: null handling",
+            "✗ Missing: JSON parsing"
+          ],
+          "matched": []
+        },
+        "test_command": {
+          "command": "pytest -q",
+          "executed": true,
+          "passed": false,
+          "output": "...............F.                                                        [100%]\n================================== FAILURES ===================================\n_________________ TestInvalidEncoding.test_invalid_utf8_byte __________________\n\nself = <test_parser_regression.TestInvalidEncoding object at 0x000002649C498430>\n\n    def test_invalid_utf8_byte(self):\n        \"\"\"Test handling of invalid UTF-8 bytes in JSON.\n    \n        This exposes the encoding bug where the parser cannot\n        handle bytes that are not valid UTF-8.\n        \"\"\"\n        from parser import ParseError\n        # Invalid UTF-8 sequence\n>       invalid_data = b'{\"level\": \"INFO\"}\\xff\\xfe'.decode('utf-8', errors='strict')\nE       UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 17: invalid start byte\n\ntests\\test_parser_regression.py:143: UnicodeDecodeError\n=========================== short test summary info ===========================\nFAILED tests\\test_parser_regression.py::TestInvalidEncoding::test_invalid_utf8_byte\n1 failed, 16 passed in 0.11s\n",
+          "error": "",
+          "workspace_path": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces\\repo_log_parser",
+          "debug": {
+            "pythonpath": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces",
+            "cwd": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces\\repo_log_parser",
+            "returncode": 1
+          }
+        },
+        "metrics": {
+          "checked": true,
+          "passed": true,
+          "metrics": {},
+          "details": [
+            "? compressed_tool_output_ratio_lt: No data",
+            "? test_pass: No data"
+          ]
+        }
+      },
+      "metrics": {
+        "context_compression_ratio": 55.14930555555556,
+        "avg_context_growth_per_turn": 3119.0,
+        "turns_completed": 5,
+        "errors_count": 0
+      },
+      "passed": false,
+      "details": []
+    },
+    {
+      "task_id": "task_03_long_workflow",
+      "version": "with-memory",
+      "timestamp": "2026-04-14T17:37:05.696278",
+      "checks": {
+        "file_modifications": {
+          "must_modify_checked": true,
+          "must_not_modify_checked": false,
+          "passed": true,
+          "details": [
+            "✓ Modified: config/__init__.py",
+            "✓ Modified: tests/test_loader_precedence.py"
+          ]
+        },
+        "final_content": {
+          "checked": true,
+          "passed": true,
+          "details": [
+            "✓ Contains: env var > local config > default config"
+          ],
+          "matched": [
+            "env var > local config > default config"
+          ]
+        },
+        "test_command": {
+          "command": "pytest -q",
+          "executed": true,
+          "passed": true,
+          "output": "................                                                         [100%]\n16 passed in 0.04s\n",
+          "error": "",
+          "workspace_path": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces\\repo_config_loader",
+          "debug": {
+            "pythonpath": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces",
+            "cwd": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces\\repo_config_loader",
+            "returncode": 0
+          }
+        },
+        "metrics": {
+          "checked": true,
+          "passed": true,
+          "metrics": {},
+          "details": [
+            "? phase_awareness_accuracy_gt: No data",
+            "? final_summary_accuracy_gt: No data"
+          ]
+        }
+      },
+      "metrics": {
+        "context_compression_ratio": 84.44599303135888,
+        "avg_context_growth_per_turn": 3991.5,
+        "phase_awareness_accuracy": 0.5,
+        "turns_completed": 6,
+        "errors_count": 0
+      },
+      "passed": true,
+      "details": []
+    }
+  ]
+}

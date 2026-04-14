@@ -1,0 +1,87 @@
+{
+  "baseline_metrics": {
+    "task_01_decision_retention": {
+      "context_compression_ratio": 347.3170731707317,
+      "avg_context_growth_per_turn": 16565.5,
+      "constraint_retention_rate": 0.5,
+      "turns_completed": 6,
+      "errors_count": 0
+    },
+    "task_02_noisy_tool_output": {
+      "context_compression_ratio": 432.59375,
+      "avg_context_growth_per_turn": 24859.8,
+      "turns_completed": 5,
+      "errors_count": 0
+    },
+    "task_03_long_workflow": {
+      "context_compression_ratio": 1036.6759581881533,
+      "avg_context_growth_per_turn": 49539.833333333336,
+      "phase_awareness_accuracy": 0.5,
+      "turns_completed": 6,
+      "errors_count": 0
+    }
+  },
+  "memory_metrics": {
+    "task_01_decision_retention": {
+      "context_compression_ratio": 67.0383275261324,
+      "avg_context_growth_per_turn": 3158.8333333333335,
+      "constraint_retention_rate": 0.0,
+      "turns_completed": 6,
+      "errors_count": 0
+    },
+    "task_02_noisy_tool_output": {
+      "context_compression_ratio": 55.14930555555556,
+      "avg_context_growth_per_turn": 3119.0,
+      "turns_completed": 5,
+      "errors_count": 0
+    },
+    "task_03_long_workflow": {
+      "context_compression_ratio": 84.44599303135888,
+      "avg_context_growth_per_turn": 3991.5,
+      "phase_awareness_accuracy": 0.5,
+      "turns_completed": 6,
+      "errors_count": 0
+    }
+  },
+  "improvements": {
+    "task_01_decision_retention": {},
+    "task_02_noisy_tool_output": {},
+    "task_03_long_workflow": {}
+  },
+  "degradations": {
+    "task_01_decision_retention": {
+      "context_compression_ratio": {
+        "baseline": 347.3170731707317,
+        "memory": 67.0383275261324
+      },
+      "constraint_retention_rate": {
+        "baseline": 0.5,
+        "memory": 0.0
+      },
+      "avg_context_growth_per_turn": {
+        "baseline": 16565.5,
+        "memory": 3158.8333333333335
+      }
+    },
+    "task_02_noisy_tool_output": {
+      "context_compression_ratio": {
+        "baseline": 432.59375,
+        "memory": 55.14930555555556
+      },
+      "avg_context_growth_per_turn": {
+        "baseline": 24859.8,
+        "memory": 3119.0
+      }
+    },
+    "task_03_long_workflow": {
+      "context_compression_ratio": {
+        "baseline": 1036.6759581881533,
+        "memory": 84.44599303135888
+      },
+      "avg_context_growth_per_turn": {
+        "baseline": 49539.833333333336,
+        "memory": 3991.5
+      }
+    }
+  }
+}

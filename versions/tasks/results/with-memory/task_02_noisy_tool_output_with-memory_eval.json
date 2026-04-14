@@ -1,0 +1,55 @@
+{
+  "task_id": "task_02_noisy_tool_output",
+  "version": "with-memory",
+  "timestamp": "2026-04-14T17:37:05.253503",
+  "checks": {
+    "file_modifications": {
+      "must_modify_checked": true,
+      "must_not_modify_checked": false,
+      "passed": true,
+      "details": [
+        "✓ Modified: parser/__init__.py",
+        "✓ Modified: tests/test_parser_regression.py"
+      ]
+    },
+    "final_content": {
+      "checked": true,
+      "passed": false,
+      "details": [
+        "✗ Missing: null handling",
+        "✗ Missing: JSON parsing"
+      ],
+      "matched": []
+    },
+    "test_command": {
+      "command": "pytest -q",
+      "executed": true,
+      "passed": false,
+      "output": "...............F.                                                        [100%]\n================================== FAILURES ===================================\n_________________ TestInvalidEncoding.test_invalid_utf8_byte __________________\n\nself = <test_parser_regression.TestInvalidEncoding object at 0x000002649C498430>\n\n    def test_invalid_utf8_byte(self):\n        \"\"\"Test handling of invalid UTF-8 bytes in JSON.\n    \n        This exposes the encoding bug where the parser cannot\n        handle bytes that are not valid UTF-8.\n        \"\"\"\n        from parser import ParseError\n        # Invalid UTF-8 sequence\n>       invalid_data = b'{\"level\": \"INFO\"}\\xff\\xfe'.decode('utf-8', errors='strict')\nE       UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 17: invalid start byte\n\ntests\\test_parser_regression.py:143: UnicodeDecodeError\n=========================== short test summary info ===========================\nFAILED tests\\test_parser_regression.py::TestInvalidEncoding::test_invalid_utf8_byte\n1 failed, 16 passed in 0.11s\n",
+      "error": "",
+      "workspace_path": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces\\repo_log_parser",
+      "debug": {
+        "pythonpath": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces",
+        "cwd": "F:\\programs\\minicodingagent\\mini-coding-agent\\versions\\tasks\\task_workspaces\\repo_log_parser",
+        "returncode": 1
+      }
+    },
+    "metrics": {
+      "checked": true,
+      "passed": true,
+      "metrics": {},
+      "details": [
+        "? compressed_tool_output_ratio_lt: No data",
+        "? test_pass: No data"
+      ]
+    }
+  },
+  "metrics": {
+    "context_compression_ratio": 55.14930555555556,
+    "avg_context_growth_per_turn": 3119.0,
+    "turns_completed": 5,
+    "errors_count": 0
+  },
+  "passed": false,
+  "details": []
+}

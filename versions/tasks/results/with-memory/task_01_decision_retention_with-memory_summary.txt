@@ -1,5 +1,7 @@
-We have decided to preserve the following compatibility constraints:
+We decided to preserve the following compatibility constraints:
 
-1. **Public CLI Unchanged**: The existing command-line interface (CLI) for adding, listing, and filtering todos must remain exactly as it is. No new CLI commands or argument structures will be added.
-2. **Existing Exported Functions Unchanged**: Any functions that are currently exported (e.g., `add_todo`, `list_tasks`, `filter_tasks`) must not be renamed. Their signatures and behavior must remain identical.
-3. **No New Imports Required**: The new filtering logic must not introduce any new external dependencies or imports that are not already present in the codebase.
+1. **Public CLI unchanged**: The command-line interface in `todo/cli.py` must remain fully backward compatible - no changes to commands, arguments, or output formats.
+2. **No renaming of exported functions**: The `filter_todos` function (and any other exported functions) must keep their current names to maintain the module's public API stability.
+3. **Existing filtering behavior preserved**: The `filter_todos` function's exact priority matching logic should remain as-is, since it already implements the requested filtering functionality.
+
+These constraints ensure that existing users and integrations continue to work without modification.

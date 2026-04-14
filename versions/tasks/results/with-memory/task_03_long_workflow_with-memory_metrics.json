@@ -1,0 +1,7 @@
+{
+  "context_compression_ratio": 84.44599303135888,
+  "avg_context_growth_per_turn": 3991.5,
+  "phase_awareness_accuracy": 0.5,
+  "turns_completed": 6,
+  "errors_count": 0
+}

@@ -316,15 +316,15 @@ class TaskRunner:
 
             # 保存完整结果
             result_file = output_dir / f"{self.task_id}_{self.version}_results.json"
-            result_file.write_text(json.dumps(self.results, indent=2, ensure_ascii=False))
+            result_file.write_text(json.dumps(self.results, indent=2, ensure_ascii=False), encoding='utf-8')
 
             # 保存最终总结
             summary_file = output_dir / f"{self.task_id}_{self.version}_summary.txt"
-            summary_file.write_text(self.results["final_summary"])
+            summary_file.write_text(self.results["final_summary"], encoding='utf-8')
 
             # 保存指标
             metrics_file = output_dir / f"{self.task_id}_{self.version}_metrics.json"
-            metrics_file.write_text(json.dumps(metrics, indent=2))
+            metrics_file.write_text(json.dumps(metrics, indent=2), encoding='utf-8')
 
             print(f"\n[INFO] Results saved to: {output_dir}")
 

@@ -1,4 +1,6 @@
 {
-  "turns_completed": 0,
-  "errors_count": 1
+  "context_compression_ratio": 432.59375,
+  "avg_context_growth_per_turn": 24859.8,
+  "turns_completed": 5,
+  "errors_count": 0
 }

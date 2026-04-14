@@ -13,6 +13,7 @@ Memory Manager Evaluation Script
 
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -108,13 +109,16 @@ class TaskEvaluator:
     def evaluate_test_command(self, workspace_path: Path) -> Dict[str, Any]:
         """执行测试命令并评估结果"""
         import subprocess
+        import os
 
         result = {
             "command": self.checks.get("test_command", "pytest -q"),
             "executed": False,
             "passed": False,
             "output": "",
-            "error": ""
+            "error": "",
+            "workspace_path": str(workspace_path),
+            "debug": {}
         }
 
         cmd = self.checks.get("test_command", "pytest -q")
@@ -125,18 +129,34 @@ class TaskEvaluator:
 
         try:
             result["executed"] = True
+
+            # Build environment with PYTHONPATH set to workspace_path parent
+            # This allows pytest to import modules from the workspace root
+            env = os.environ.copy()
+            workspace_parent = str(workspace_path.parent)
+            if 'PYTHONPATH' in env:
+                env['PYTHONPATH'] = workspace_parent + os.pathsep + env['PYTHONPATH']
+            else:
+                env['PYTHONPATH'] = workspace_parent
+
+            result["debug"]["pythonpath"] = env.get('PYTHONPATH')
+            result["debug"]["cwd"] = str(workspace_path)
+
+            # Use list form to avoid shell environment issues
             proc = subprocess.run(
-                cmd,
-                shell=True,
+                [sys.executable, "-m", "pytest", "-q"],
+                shell=False,
                 cwd=str(workspace_path),
                 capture_output=True,
                 text=True,
-                timeout=60
+                timeout=60,
+                env=env
             )
 
             result["output"] = proc.stdout
             result["error"] = proc.stderr
             result["passed"] = proc.returncode == 0
+            result["debug"]["returncode"] = proc.returncode
 
         except subprocess.TimeoutExpired:
             result["error"] = "Test command timed out"
@@ -232,12 +252,15 @@ class TaskEvaluator:
 
         # 3. 执行测试命令
         print(f"\n[3] Running test command: {self.checks.get('test_command', 'N/A')}")
+        print(f"    Workspace: {workspace_path}")
         test_result = self.evaluate_test_command(workspace_path)
         self.results["checks"]["test_command"] = test_result
         if test_result["executed"]:
             print(f"    Exit code: {test_result['passed']}")
             if test_result["output"]:
-                print(f"    Output: {test_result['output'][:200]}...")
+                print(f"    Output: {test_result['output'][:500]}")
+            if test_result["error"]:
+                print(f"    Error: {test_result['error'][:1000]}")
         else:
             print(f"    Error: {test_result['error']}")
 
@@ -346,7 +369,7 @@ def run_all_tasks(
         if output_dir:
             output_dir.mkdir(parents=True, exist_ok=True)
             result_file = output_dir / f"{task_config['id']}_{version}_eval.json"
-            result_file.write_text(json.dumps(result, indent=2, ensure_ascii=False))
+            result_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding='utf-8')
 
     # 打印汇总结果
     print(f"\n{'='*60}")
@@ -361,7 +384,7 @@ def run_all_tasks(
     # 保存汇总结果
     if output_dir:
         summary_file = output_dir / f"eval_summary_{version}.json"
-        summary_file.write_text(json.dumps(results, indent=2, ensure_ascii=False))
+        summary_file.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding='utf-8')
         print(f"\nResults saved to: {summary_file}")
 
     return results
@@ -502,7 +525,7 @@ def main():
             comparison = compare_versions(baseline_results, memory_results)
 
             comparison_file = output_dir / "comparison.json"
-            comparison_file.write_text(json.dumps(comparison, indent=2, ensure_ascii=False))
+            comparison_file.write_text(json.dumps(comparison, indent=2, ensure_ascii=False), encoding='utf-8')
 
             print(f"\nComparison saved to: {comparison_file}")
 
