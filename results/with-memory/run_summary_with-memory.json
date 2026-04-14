@@ -1,8 +1,8 @@
 [
   {
     "task_id": "task_01_decision_retention",
-    "version": "baseline",
-    "timestamp": "2026-04-14T16:49:08.616027",
+    "version": "with-memory",
+    "timestamp": "2026-04-14T16:35:17.487151",
     "turns": [],
     "metrics": {
       "constraint_retention_rate": 0.0,
@@ -13,13 +13,13 @@
     "tool_outputs": [],
     "final_summary": "",
     "errors": [
-      "No module named 'dotenv'"
+      "cannot import name 'OpenAI' from 'openai' (F:\\Anaconda\\lib\\site-packages\\openai\\__init__.py)"
     ]
   },
   {
     "task_id": "task_02_noisy_tool_output",
-    "version": "baseline",
-    "timestamp": "2026-04-14T16:49:08.783572",
+    "version": "with-memory",
+    "timestamp": "2026-04-14T16:35:17.772015",
     "turns": [],
     "metrics": {
       "turns_completed": 0,
@@ -29,13 +29,13 @@
     "tool_outputs": [],
     "final_summary": "",
     "errors": [
-      "No module named 'dotenv'"
+      "cannot import name 'OpenAI' from 'openai' (F:\\Anaconda\\lib\\site-packages\\openai\\__init__.py)"
     ]
   },
   {
     "task_id": "task_03_long_workflow",
-    "version": "baseline",
-    "timestamp": "2026-04-14T16:49:08.884735",
+    "version": "with-memory",
+    "timestamp": "2026-04-14T16:35:17.899260",
     "turns": [],
     "metrics": {
       "phase_awareness_accuracy": 0.5,
@@ -46,7 +46,7 @@
     "tool_outputs": [],
     "final_summary": "",
     "errors": [
-      "No module named 'dotenv'"
+      "cannot import name 'OpenAI' from 'openai' (F:\\Anaconda\\lib\\site-packages\\openai\\__init__.py)"
     ]
   }
 ]

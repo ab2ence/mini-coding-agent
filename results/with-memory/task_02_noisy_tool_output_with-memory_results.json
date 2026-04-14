@@ -1,7 +1,7 @@
 {
   "task_id": "task_02_noisy_tool_output",
-  "version": "baseline",
-  "timestamp": "2026-04-14T16:49:08.783572",
+  "version": "with-memory",
+  "timestamp": "2026-04-14T16:35:17.772015",
   "turns": [],
   "metrics": {
     "turns_completed": 0,
@@ -11,6 +11,6 @@
   "tool_outputs": [],
   "final_summary": "",
   "errors": [
-    "No module named 'dotenv'"
+    "cannot import name 'OpenAI' from 'openai' (F:\\Anaconda\\lib\\site-packages\\openai\\__init__.py)"
   ]
 }

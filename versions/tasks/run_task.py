@@ -12,6 +12,7 @@ Task Runner Script
 
 import argparse
 import json
+import os
 import shutil
 import sys
 import time
@@ -38,7 +39,7 @@ class TaskRunner:
         self,
         task_config: Dict,
         version: str = "with-memory",
-        model_name: str = "qwen3.5:2b",
+        model_name: str = "deepseek-chat",
         verbose: bool = False
     ):
         self.task_config = task_config
@@ -95,7 +96,21 @@ class TaskRunner:
                 store = SessionStore(work_dir / ".mini-coding-agent" / "sessions")
 
                 # 强制使用真实模型，不允许虚假回复
-                if hasattr(agent_module, 'OllamaModelClient'):
+                if hasattr(agent_module, 'DeepSeekModelClient'):
+                    # 加载 .env 文件 - 从项目根目录加载
+                    env_file = Path(__file__).resolve().parent.parent.parent / ".env"
+                    if env_file.exists():
+                        from dotenv import load_dotenv
+                        load_dotenv(env_file)
+                    
+                    ModelClient = agent_module.DeepSeekModelClient
+                    model_client = ModelClient(
+                        model=self.model_name,
+                        temperature=0.2,
+                        top_p=0.9,
+                        timeout=300
+                    )
+                elif hasattr(agent_module, 'OllamaModelClient'):
                     ModelClient = agent_module.OllamaModelClient
                     model_client = ModelClient(
                         model=self.model_name,
@@ -108,7 +123,7 @@ class TaskRunner:
                     ModelClient = agent_module.ModelClient
                     model_client = ModelClient(model=self.model_name)
                 else:
-                    raise AttributeError("Neither OllamaModelClient nor ModelClient found in module")
+                    raise AttributeError("Neither DeepSeekModelClient nor OllamaModelClient nor ModelClient found in module")
 
                 agent = agent_module.MiniAgent(
                     model_client=model_client,
@@ -326,7 +341,7 @@ def run_single_task(
     task_file: Path,
     version: str,
     output_dir: Optional[Path] = None,
-    model_name: str = "qwen3.5:2b",
+    model_name: str = "deepseek-chat",
     verbose: bool = False
 ) -> Dict[str, Any]:
     """运行单个任务"""
@@ -349,7 +364,7 @@ def run_all_tasks(
     tasks_dir: Path,
     version: str,
     output_dir: Optional[Path] = None,
-    model_name: str = "qwen3.5:2b",
+    model_name: str = "deepseek-chat",
     verbose: bool = False
 ) -> List[Dict[str, Any]]:
     """运行所有任务"""
@@ -429,7 +444,7 @@ def main():
     parser.add_argument(
         "--model",
         type=str,
-        default="qwen3.5:2b",
+        default="deepseek-chat",
         help="Model name to use"
     )
 
