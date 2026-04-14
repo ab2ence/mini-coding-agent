@@ -94,25 +94,28 @@ class TaskRunner:
                 workspace = WorkspaceContext.build(work_dir)
                 store = SessionStore(work_dir / ".mini-coding-agent" / "sessions")
 
-                # 尝试使用真实模型
-                try:
+                # 强制使用真实模型，不允许虚假回复
+                if hasattr(agent_module, 'OllamaModelClient'):
+                    ModelClient = agent_module.OllamaModelClient
+                    model_client = ModelClient(
+                        model=self.model_name,
+                        host="http://127.0.0.1:11434",
+                        temperature=0.2,
+                        top_p=0.9,
+                        timeout=300
+                    )
+                elif hasattr(agent_module, 'ModelClient'):
                     ModelClient = agent_module.ModelClient
                     model_client = ModelClient(model=self.model_name)
-                except Exception:
-                    # 回退到 FakeModelClient
-                    if self.verbose:
-                        print("[WARN] Using FakeModelClient - no real model")
-                    FakeModelClient = agent_module.FakeModelClient
-                    model_client = FakeModelClient([
-                        f"<final>Response to: {turn[:50]}...</final>"
-                        for turn in turns
-                    ])
+                else:
+                    raise AttributeError("Neither OllamaModelClient nor ModelClient found in module")
 
                 agent = agent_module.MiniAgent(
                     model_client=model_client,
                     workspace=workspace,
                     session_store=store,
-                    approval_policy="auto"
+                    approval_policy="auto",
+                    max_steps=20
                 )
 
                 # 记录初始上下文长度
@@ -255,6 +258,13 @@ class TaskRunner:
         import importlib.util
         spec = importlib.util.spec_from_file_location(agent_module_name, agent_path)
         agent_module = importlib.util.module_from_spec(spec)
+
+        # 添加模块搜索路径
+        if self.version == "with-memory":
+            sys.path.insert(0, str(project_root / "with-memory"))
+        else:
+            sys.path.insert(0, str(project_root / "baseline"))
+
         spec.loader.exec_module(agent_module)
 
         # 准备工作区
@@ -329,7 +339,8 @@ def run_single_task(
         verbose=verbose
     )
 
-    tasks_dir = task_file.parent.parent
+    # tasks_dir 应该是 task_file 的父目录 (versions/tasks)
+    tasks_dir = task_file.parent
 
     return runner.run(tasks_dir, output_dir)
 

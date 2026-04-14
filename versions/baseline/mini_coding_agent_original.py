@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -220,6 +221,39 @@ class OllamaModelClient:
         if data.get("error"):
             raise RuntimeError(f"Ollama error: {data['error']}")
         return data.get("response", "")
+
+
+class DeepSeekModelClient:
+    def __init__(self, model="deepseek-chat", api_key=None, temperature=0.2, top_p=0.9, timeout=300):
+        self.model = model
+        self.temperature = temperature
+        self.top_p = top_p
+        self.timeout = timeout
+        self.api_key = api_key or os.environ.get('DEEPSEEK_API_KEY')
+        if not self.api_key:
+            raise RuntimeError("DEEPSEEK_API_KEY not found in environment variables")
+        
+        from openai import OpenAI
+        self.client = OpenAI(
+            api_key=self.api_key,
+            base_url="https://api.deepseek.com"
+        )
+
+    def complete(self, prompt, max_new_tokens):
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=self.temperature,
+                top_p=self.top_p,
+                max_tokens=max_new_tokens,
+                stream=False
+            )
+            return response.choices[0].message.content
+        except Exception as exc:
+            raise RuntimeError(f"DeepSeek API request failed: {exc}")
 
 
 class MiniAgent:
@@ -912,12 +946,18 @@ def build_welcome(agent, model, host):
 def build_agent(args):
     workspace = WorkspaceContext.build(args.cwd)
     store = SessionStore(Path(workspace.repo_root) / ".mini-coding-agent" / "sessions")
-    model = OllamaModelClient(
-        model=args.model,
-        host=args.host,
+    
+    # Load from .env file if exists
+    env_file = Path(__file__).parent.parent.parent / ".env"
+    if env_file.exists():
+        from dotenv import load_dotenv
+        load_dotenv(env_file)
+    
+    model = DeepSeekModelClient(
+        model="deepseek-chat",
         temperature=args.temperature,
         top_p=args.top_p,
-        timeout=args.ollama_timeout,
+        timeout=args.api_timeout,
     )
     session_id = args.resume
     if session_id == "latest":
@@ -945,13 +985,12 @@ def build_agent(args):
 def build_arg_parser():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="Minimal coding agent for Ollama models.",
+        description="Minimal coding agent using DeepSeek API.",
     )
     parser.add_argument("prompt", nargs="*", help="Optional one-shot prompt.")
     parser.add_argument("--cwd", default=".", help="Workspace directory.")
-    parser.add_argument("--model", default="qwen3.5:4b", help="Ollama model name.")
-    parser.add_argument("--host", default="http://127.0.0.1:11434", help="Ollama server URL.")
-    parser.add_argument("--ollama-timeout", type=int, default=300, help="Ollama request timeout in seconds.")
+    parser.add_argument("--model", default="deepseek-chat", help="DeepSeek model name.")
+    parser.add_argument("--api-timeout", type=int, default=300, help="API request timeout in seconds.")
     parser.add_argument("--resume", default=None, help="Session id to resume or 'latest'.")
     parser.add_argument(
         "--approval",
@@ -970,7 +1009,7 @@ def main(argv=None):
     args = build_arg_parser().parse_args(argv)
     agent = build_agent(args)
 
-    print(build_welcome(agent, model=args.model, host=args.host))
+    print(build_welcome(agent, model=args.model, host="api.deepseek.com"))
 
     if args.prompt:
         prompt = " ".join(args.prompt).strip()

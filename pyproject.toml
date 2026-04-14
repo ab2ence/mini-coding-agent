@@ -3,12 +3,14 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mini-coding-agent-ollama"
-version = "0.1.0"
-description = "Minimal standalone coding agent backed by Ollama"
+name = "mini-coding-agent-deepseek"
+version = "0.2.0"
+description = "Minimal standalone coding agent backed by DeepSeek API"
 requires-python = ">=3.10"
 dependencies = [
     "pytest>=9.0.2",
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
 ]
 
 [project.scripts]
